@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const postModel = require("../models/post");
 const userModel = require("../models/user");
 
@@ -17,79 +18,51 @@ module.exports.getAllPostsController = async(req, res, next)=> {
 }
 
 module.exports.getFilteredPostsController = async(req, res, next)=> {
-
     try {
-
-        const { title, tags } = req.query;
-
-const query = postModel.find();
-
-if (title) {
-  const titleTerms = title.split(' ').map(term => new RegExp(term, 'i'));
-  query.where({ title: { $in: titleTerms } });
-}
-
-if (tags) {
-  const tagsArray = Array.isArray(tags) ? tags : [tags];
-  query.where({ tags: { $in: tagsArray } });
-}
-
-const posts = await query.exec();
-
-res.status(200).json({
-  message: 'getting page',
-  posts: posts
-});
-
-
-
-
-
-
-
-
-
-
-
-        // const posts = await postModel.find({})
-        // console.log('after exec', posts)
-        // // console.log(posts)
-        // console.log(req.params)
-        // console.log(req.query)
-        // let responsePosts = posts;
-        // if(req.query.title){
-        //     const titles = req.query.title.split(" ");
-        //     const filtered = responsePosts.filter(post=> {
-        //         return titles.some(title=> post.title.toLowerCase().includes(title))
-        //     })
-        //     // console.log('filtered posts: ', filtered)
-        //     responsePosts = filtered;
-        // }
-
-        // if(req.query.tags){
-        //     const tagsArray = [];
-        //     if(typeof req.query.tags === 'string'){
-        //         tagsArray.push(req.query.tags)
-        //     }
-        //     const tagsfiltered = responsePosts.filter(post=> {
-        //         return tagsArray.some(tag=> post.tags.includes(tag));
-        //     })
-        //     responsePosts = tagsfiltered;
-
-        // }
-        // console.log('all filtered', responsePosts.slice(0,1))
-
-        // res.status(200).json({
-        //     message:'getting page',
-        //     posts: responsePosts.slice(0,1)
-        // })
-    } catch (error) {
-        console.log(error?.message)
-        res.status(500).json({
-            message:error?.message,
+        const {page = 1, search, tags} = req.query;
+        const limit = 10;
+        const skip = (page-1)*limit;
+        const pipeline = [];
+        
+        pipeline.push({
+            $match: {user: new mongoose.Types.ObjectId(req.user.id)}
         })
-    }
-}
+        if(search){
+            const searchArray = search.split(" ").map(s=> new RegExp(s, 'i'));
+            pipeline.push({
+                $match: {title: {$in: searchArray}}
+            })
+        }
+        if(tags){
+            const tagsArray = Array.isArray(tags)? tags: [tags];
+            pipeline.push({
+                $match: {tags: {$in: tagsArray}}
+            })
+        }
+        pipeline.push({
+            $facet: {
+              totalCount: [{ $count: "count" }],
+              posts: [{ $skip: skip }, { $limit: limit }],
+            },
+          });
+        
+        const data = await postModel.aggregate(pipeline);
+        console.log(data)
+        data[0].page = page;
+        data[0].totalCount = data[0]?.totalCount[0]?.count || 0;
+        // console.log(data)
+        if(data[0]?.totalCount> (page*limit)) data[0].nextPage = parseFloat(page)+1;
+        res.status(200).json({
+            data:data[0]
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+        message: error?.message
+        });
+    }};
+    
 
 module.exports.createPostController = async(req, res,next)=> {
     try {
