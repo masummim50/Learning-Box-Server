@@ -47,10 +47,8 @@ module.exports.getFilteredPostsController = async(req, res, next)=> {
           });
         
         const data = await postModel.aggregate(pipeline);
-        console.log(data)
         data[0].page = page;
         data[0].totalCount = data[0]?.totalCount[0]?.count || 0;
-        // console.log(data)
         if(data[0]?.totalCount> (page*limit)) data[0].nextPage = parseFloat(page)+1;
         res.status(200).json({
             data:data[0]

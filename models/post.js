@@ -21,6 +21,10 @@ const postSchema = mongoose.Schema({
     color:{
         type:String,
         required:true
+    },
+    isPublic:{
+        type:boolean,
+        default: false
     }
 
 })
