@@ -30,8 +30,8 @@ module.exports.logInUserController = async(req, res, next)=> {
             console.log('inside else')
             const newUser = await userModel.create(req.body);
             const payload = {
-                email:user.email,
-                name:user.name,
+                email:email,
+                name:name,
                 id:newUser._id,
             }
             const token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn:'2 days'})

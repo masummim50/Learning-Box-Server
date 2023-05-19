@@ -9,7 +9,7 @@ module.exports.checkLoginMiddleware = async(req, res, next)=> {
         const decoded =await promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY);
         console.log(decoded, "decoded token from jwt")
         req.user = decoded;
-        
+        console.log('decoded', decoded)
         next();
 
     } catch (error) {

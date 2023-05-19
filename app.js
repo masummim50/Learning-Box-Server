@@ -6,6 +6,7 @@ const postRouter = require('./routers/posts.router');
 const userRouter = require('./routers/user.route');
 const cors = require('cors')
 
+const path = require('path');
 
 const app = express();
 app.use(express.json())
@@ -26,10 +27,11 @@ app.post("/postone", async(req, res, next)=> {
     })
 })
 
-app.get("/", (req, res)=> {
-    return res.status(200).json({
-        message:'app view page'
-    })
-})
+
+app.get('/', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'index.html');
+  console.log(filePath)
+  res.sendFile(filePath);
+});
 
 module.exports = app;

@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema({
         required:true
     },
     isPublic:{
-        type:boolean,
+        type:Boolean,
         default: false
     }
 
