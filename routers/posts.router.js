@@ -9,7 +9,7 @@ const { getPostsController } = require('../controllers/getPostcontroller');
 const postRouter = express.Router();
 
 // postRouter.get("/posts", checkLoginMiddleware, getFilteredPostsController);
-// postRouter.post("/post", checkLoginMiddleware, createPostController);
+postRouter.post("/post", checkLoginMiddleware, createPostController);
 // postRouter.get("/filteredposts",checkLoginMiddleware, getFilteredPostsController)
 // postRouter.get("/testing", filterAggregation)
 

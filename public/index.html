@@ -4,9 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Learning box Server</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    view page
+<body class="text-[25px] bg-slate-300">
+    <div class="header text-center">
+        <p class="font-bold text-[40px] text-slate-600">Learning box api</p>
+    </div>
+    <div class="text-[20px]">
+        Endpoints
+    </div>
+    <div class="p-3">
+        <h3 class="text-lime-900 font-bold">Login</h3>
+        <p>use only google sign in method from firebase, returns some user info and an accesstoken, set that to authorization header, will need it for every request</p>
+        <input type="text" disabled class="bg-white w-[100%] px-2 py-4" value="home/login">
+    </div>
+    <div class="p-3">
+        <h3 class="text-green-600 font-bold">GET</h3>
+        <p>to get personal post, make sure to send the accesstoken in the authorization header</p>
+        <input type="text" disabled class="bg-white w-[100%] px-2 py-4 mb-2" value="home/home">
+        <p>To get all the posts that are marked public</p>
+        <input type="text" disabled class="bg-white w-[100%] px-2 py-4" value="home/publicPosts">
+        <p class="text-green-600 font-semibold">for all the get requests, you can send page, search and tags query.<br/> page by default is 1, and limit is by default 10. returned data will have a totalCount property </p>
+    </div>
+    <div class="p-3">
+        <h3 class="text-sky-600 font-bold">POST</h3>
+        <p>send the post object in req.body, returns the new post</p>
+        <input type="text" disabled class="bg-white w-[100%] px-2 py-4" value="home/post">
+    </div>
+    <div class="p-3">
+        <h3 class="text-orange-500 font-bold">PATCH</h3>
+        <p>make sure to send both the post id and the user id for the update operation, returns the updated document</p>
+        <input type="text" disabled class="bg-white w-[100%] px-2 py-4" value="home/update/postid/userid">
+    </div>
+    
+    <div class="p-3">
+        <h3 class="text-red-500 font-bold">DELETE</h3>
+        <p>send post id to delete a specific post</p>
+        <input type="text" disabled class="bg-white w-[100%] px-2 py-4" value="home/delete/postid">
+    </div>
 </body>
 </html>
