@@ -4,6 +4,7 @@ const {promisify} = require('util');
 require('dotenv').config()
 
 module.exports.checkLoginMiddleware = async(req, res, next)=> {
+    
     try {
     const token = req.headers.authorization?.split(" ")[1].replaceAll('"', '');
         const decoded =await promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY);

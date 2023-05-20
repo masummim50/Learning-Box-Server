@@ -1,6 +1,10 @@
 const { default: mongoose} = require("mongoose");
 
 const userschema =  mongoose.Schema({
+    id:{
+        type:String,
+        required:true
+    },
     name:{
         type:String,
         required:true
