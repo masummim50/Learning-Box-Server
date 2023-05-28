@@ -33,7 +33,7 @@ module.exports.logInUserController = async (req, res, next) => {
               name:user.name,
               id:user._id,
           }
-          const token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn:'2 days'})
+          const token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn:'7 days'})
           return res.status(200).json({
               user,
               accessToken:token,

@@ -14,7 +14,7 @@ module.exports.checkLoginMiddleware = async(req, res, next)=> {
         next();
 
     } catch (error) {
-        res.status(400).json({
+       return res.status(400).json({
             status: 'fail',
             message: 'no login data found',
             error:error?.message
