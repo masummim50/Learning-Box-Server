@@ -2,11 +2,8 @@ const postModel = require("../models/post")
 
 
 module.exports.getPostsController = async(req, res, next)=> {
-    console.log('getpostcontroller')
     try {
-        console.log('pipeline', req.pipeline)
         const data = await postModel.aggregate(req.pipeline);
-
         return res.status(200).json({
             status:'success',
             data:data[0]
